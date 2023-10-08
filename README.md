@@ -56,6 +56,7 @@ By integrating these points, readers can quickly grasp the vast potential and fl
     - We've provided a Helm chart for SQL Server exposed via a headless service.
     - Set up the namespace and install the chart:
       ```
+      cd k8s/sql-server
       kubectl create namespace az-local-functions-db
       helm install sql-server-release sql-server-chart -n az-local-functions-db
       ```

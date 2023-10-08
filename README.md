@@ -38,7 +38,7 @@ By integrating these points, readers can quickly grasp the vast potential and fl
       ```
       docker network create local
       ```
-    - This setup allows for future CI/CD integrations with Docker-in-Docker, ensuring images are pushed to the registry only after certain tests pass.
+    - Having our registry in a common network allows us to have other compose files access our registry. This leads to extra flexibility and more capabilities like Docker in Docker based cicd workflows, however, that topic is way beyond the scope of this repo.
 
 2. **Local Docker Registry**:
     - Start the local Docker registry:

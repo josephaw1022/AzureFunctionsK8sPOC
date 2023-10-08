@@ -7,4 +7,23 @@ function1:
   environment:
     - name: MyEnvironmentVar
       value: value
-  
+
+dbSecret:
+  name: mssql-password-secret
+  password: TWFkWmVicmEyMDI0
+
+scaledObject:
+  name: azure-function-scaledobject
+  pollingInterval: 15
+  maxReplicaCount: 50
+  minReplicaCount: 2
+  database:
+    username: sa
+    host: sqlserver-0.sqlserver-service.az-local-functions-db.svc.cluster.local
+    dbName: az-sql-server-db
+    query: SELECT [scale] FROM [keda-scaler-poc] WHERE [name] = 'azure-func-instances'
+    targetValue: '1'
+
+service:
+  type: NodePort
+  name: azure-function-service

@@ -1,39 +1,34 @@
 # Secret for Azure SQL Server DB
-# This secret will be used by the scaler to connect to the Azure SQL Server DB and get the value to scale the Azure Function
-# Command to obtain password format acceptable to keda: echo -n "MadZebra2024" | base64
-# The password is base64 encoded and stored in the secret
-# The actual password is MadZebra2024 (without quotes)
 apiVersion: v1
 kind: Secret
 metadata:
-  name: mssql-password-secret
+  name: {{ .Values.dbSecret.name }}
 type: Opaque
 data:
-  MSSQL_PASSWORD: TWFkWmVicmEyMDI0
+  MSSQL_PASSWORD: {{ .Values.dbSecret.password }}
 
 ---
 
 # Scaler For Azure Function
-# This is the scaler that will scale the Azure Function based on the value returned from the query
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: azure-function-scaledobject
+  name: {{ .Values.scaledObject.name }}
 spec:
   scaleTargetRef:
     name: azure-function-deployment
-  pollingInterval: 15
-  maxReplicaCount: 50
-  minReplicaCount: 2
+  pollingInterval: {{ .Values.scaledObject.pollingInterval }}
+  maxReplicaCount: {{ .Values.scaledObject.maxReplicaCount }}
+  minReplicaCount: {{ .Values.scaledObject.minReplicaCount }}
   triggers:
   - type: mssql
     metadata:
-      username: sa
+      username: {{ .Values.scaledObject.database.username }}
       passwordFromEnv: MSSQL_PASSWORD
-      host: 	sqlserver-0.sqlserver-service.az-local-functions-db.svc.cluster.local # Pointing to headless service
-      database: az-sql-server-db
-      query: SELECT [scale] FROM [keda-scaler-poc] WHERE [name] = 'azure-func-instances'
-      targetValue: '1' 
+      host: {{ .Values.scaledObject.database.host }}
+      database: {{ .Values.scaledObject.database.dbName }}
+      query: {{ .Values.scaledObject.database.query }}
+      targetValue: {{ .Values.scaledObject.database.targetValue | quote }}
 
 ---
 
@@ -43,15 +38,15 @@ kind: Deployment
 metadata:
   name: azure-function-deployment
   labels: 
-    app: azure-function
+    app: {{ .Values.function1.name }}
 spec:
   selector:
     matchLabels:
-      app: azure-function
+      app: {{ .Values.function1.name }}
   template:
     metadata:
       labels:
-        app: azure-function
+        app: {{ .Values.function1.name }}
     spec:
       containers:
         - image: {{ .Values.function1.image }}
@@ -62,26 +57,22 @@ spec:
           - name: MSSQL_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: mssql-password-secret
-                key: MSSQL_PASSWORD
+                name: {{ .Values.dbSecret.name }}
+                key: MSSQL_PASSWORD       
 
 ---
 
 # Function Service
-# This is the service that will expose the Azure Function to the outside world via nodeport (for local testing)
-# The service will be exposed via ingress in a production environment
 apiVersion: v1
 kind: Service
 metadata:
-  name: azure-function-service
+  name: {{ .Values.service.name }}
 spec:
-  type: NodePort
+  type: {{ .Values.service.type }}
   selector:
-    app: azure-function
+    app: {{ .Values.function1.name }}
   ports:
     - protocol: TCP
       port: {{ .Values.function1.port }}
       targetPort: {{ .Values.function1.containerPort }}
       nodePort: {{ .Values.function1.nodePort }}
-
-

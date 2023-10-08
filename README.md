@@ -3,7 +3,7 @@
 This repository provides a quickstart guide on how to deploy an Azure Function locally within a Kubernetes cluster using Docker and KEDA. The aim is to demonstrate a simple proof of concept, showing how an Azure Function can be scaled based on the results of our keda scalers. This one being the results of a sql server query.
 
 ## 🎥 **Video Walkthrough**
-For a comprehensive visual walkthrough and a working demo of this repo, check out my [Local Demo On Youtube](https://www.youtube.com/watch?v=ULrng1T31EY).
+For a comprehensive visual walkthrough and a working demo of this repo, check out my [Local Demo On Youtube](https://youtu.be/4NpJ7j_u1N0).
 
 ## 🚀 **Key Takeaways**:
 

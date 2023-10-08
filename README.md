@@ -13,7 +13,7 @@ For a comprehensive visual walkthrough and a working demo of this repo, check ou
 
 - **Universal Scaling with KEDA**: KEDA scalers are not restricted to Azure. Whether your infrastructure is on-premises, AWS, GCP, or any environment with a Kubernetes cluster, KEDA will seamlessly integrate.
 
-- **CNCF Seal of Approval**: KEDA has graduated from the Cloud Native Computing Foundation (CNCF), underlining its reliability, robustness, and the industry's confidence in its capabilities.
+- **CNCF Seal of Approval**: KEDA has moved to the Graduated maturity level by the Cloud Native Computing Foundation (CNCF) on August 22, 2023, underlining its reliability, robustness, and the industry's confidence in its capabilities.
 
 - **Local Simulations**: Demonstrating the feasibility of simulating a KEDA-based scaling workflow right on your local machine, removing the need for complex cloud-based setups for development testing.
 

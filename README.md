@@ -59,6 +59,7 @@ By integrating these points, readers can quickly grasp the vast potential and fl
       cd k8s/sql-server
       kubectl create namespace az-local-functions-db
       helm install sql-server-release sql-server-chart -n az-local-functions-db
+      cd ../..
       ```
     - To upgrade the chart later:
       ```

@@ -2,6 +2,27 @@
 
 This repository provides a quickstart guide on how to deploy an Azure Function locally within a Kubernetes cluster using Docker and KEDA. The aim is to demonstrate a simple proof of concept, showing how an Azure Function can be scaled based on the results of our keda scalers. This one being the results of a sql server query.
 
+## 🎥 **Video Walkthrough**
+For a comprehensive visual walkthrough and a working demo of this repo, check out my [Local Demo On Youtube](https://www.youtube.com/watch?v=ULrng1T31EY).
+
+## 🚀 **Key Takeaways**:
+
+- **Open-Source Power**: Azure Functions are open-sourced, highlighting Microsoft's commitment to community-driven development and transparency.
+
+- **Containerized Flexibility**: This repository leverages Docker to run Azure Functions, illustrating the portability and ease of deployment of serverless applications in containerized environments.
+
+- **Universal Scaling with KEDA**: KEDA scalers are not restricted to Azure. Whether your infrastructure is on-premises, AWS, GCP, or any environment with a Kubernetes cluster, KEDA will seamlessly integrate.
+
+- **CNCF Seal of Approval**: KEDA has graduated from the Cloud Native Computing Foundation (CNCF), underlining its reliability, robustness, and the industry's confidence in its capabilities.
+
+- **Local Simulations**: Demonstrating the feasibility of simulating a KEDA-based scaling workflow right on your local machine, removing the need for complex cloud-based setups for development testing.
+
+- **Metric Versatility with KEDA**: While this demo emphasizes SQL Server query results, KEDA's scalers can be configured for various metrics: CPU usage of pods, Prometheus query results, memory consumption, queue lengths, cron jobs, and more.
+
+- **End-to-End Control**: Realize the unmatched power and control KEDA and Azure Functions offer over the scaling and performance of your serverless applications.
+
+By integrating these points, readers can quickly grasp the vast potential and flexibility provided by Azure Functions and KEDA, regardless of the infrastructure they're working with.
+
 ## Overview
 
 - **Azure Function with Docker**: The Azure Function in this repository is containerized using Docker, making it easy to run without needing additional installations.

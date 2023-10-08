@@ -52,11 +52,16 @@ This repository provides a quickstart guide on how to deploy an Azure Function l
       GO
       SET QUOTED_IDENTIFIER ON
       GO
-      CREATE TABLE [dbo].[keda-scaler-poc](
-          [name] [nvarchar](255) NULL,
-          [scale] [int] NULL
-      ) ON [PRIMARY]
+      
+      IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'keda-scaler-poc' AND schema_id = SCHEMA_ID('dbo'))
+      BEGIN
+          CREATE TABLE [dbo].[keda-scaler-poc](
+              [name] [nvarchar](255) NULL,
+              [scale] [int] NULL
+          ) ON [PRIMARY]
+      END
       GO
+
       ```
 
 6. **Deploying the App with Skaffold**:

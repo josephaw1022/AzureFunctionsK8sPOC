@@ -92,6 +92,9 @@ By integrating these points, readers can quickly grasp the vast potential and fl
       ```
       skaffold run
       ```
+    
+    - Go to [Azure Functio App Homepage](http://localhost:30002) or our [function's endpoint](http://localhost:30002/api/httptrigger1)
+
     - The Dockerfile for the Azure Function app can contain one or more functions. Here's a snapshot of the Dockerfile:
       ```Dockerfile
         # Use the .NET 7 SDK as the base image
@@ -112,7 +115,7 @@ By integrating these points, readers can quickly grasp the vast potential and fl
         WORKDIR /home/site/wwwroot
         COPY --from=build-env /app/out .
       ```
-    - Use `skaffold deploy` to perform the Helm release.
+    - Use `skaffold deploy --images localhost:5000/myfunctionapp:latest` to perform the Helm release.
     - For continuous development, `skaffold dev` will trigger `skaffold run` every time there's a change to the Azure Function.
 
 ---

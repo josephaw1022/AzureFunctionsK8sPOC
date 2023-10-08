@@ -1,0 +1,21 @@
+version: '3'
+services:
+  image-registry:
+    image: registry:2
+    ports:
+      - "5000:5000"
+    volumes:
+      - registry:/var/lib/registry
+
+    restart: unless-stopped
+
+    networks:
+      - local
+
+volumes:
+  registry:
+
+
+networks:
+  local:
+    external: true

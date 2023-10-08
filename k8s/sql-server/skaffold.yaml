@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta21
+kind: Config
+
+
+deploy:
+  helm:
+    releases:
+      - name: sql-server-release
+        chartPath: sql-server-helm
+        # Values typically used for overriding default values in Helm charts
+        valuesFiles:
+          - sql-server-helm/values.yaml
+        # Set namespace if needed
+        namespace: "az-local-functions-db"
+        # Enable helm upgrade and recreate Pods if needed
+        # upgradeStrategy: recreate

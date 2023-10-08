@@ -1,0 +1,20 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+build:
+  artifacts:
+    - image: localhost:5000/myfunctionapp
+      context: .
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  helm:
+    releases:
+      - name: azure-func-release
+        chartPath: ./k8s/az-func-helm
+        valuesFiles:
+          - ./k8s/az-func-helm/values.yaml
+        namespace: "az-local-functions"
+        createNamespace: false
+
+        setValueTemplates:
+          function1.image: localhost:5000/myfunctionapp:latest

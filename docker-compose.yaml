@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  functionapp:
+    image: localhost:5000/myfunctionapp
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "7279:80"
+    environment:
+      - MyEnvironmentVar=value
+
+    restart: unless-stopped

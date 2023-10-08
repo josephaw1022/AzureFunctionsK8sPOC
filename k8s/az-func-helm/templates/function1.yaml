@@ -1,0 +1,87 @@
+# Secret for Azure SQL Server DB
+# This secret will be used by the scaler to connect to the Azure SQL Server DB and get the value to scale the Azure Function
+# Command to obtain password format acceptable to keda: echo -n "MadZebra2024" | base64
+# The password is base64 encoded and stored in the secret
+# The actual password is MadZebra2024 (without quotes)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mssql-password-secret
+type: Opaque
+data:
+  MSSQL_PASSWORD: TWFkWmVicmEyMDI0
+
+---
+
+# Scaler For Azure Function
+# This is the scaler that will scale the Azure Function based on the value returned from the query
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: azure-function-scaledobject
+spec:
+  scaleTargetRef:
+    name: azure-function-deployment
+  pollingInterval: 15
+  maxReplicaCount: 50
+  minReplicaCount: 2
+  triggers:
+  - type: mssql
+    metadata:
+      username: sa
+      passwordFromEnv: MSSQL_PASSWORD
+      host: 	sqlserver-0.sqlserver-service.az-local-functions-db.svc.cluster.local # Pointing to headless service
+      database: az-sql-server-db
+      query: SELECT [scale] FROM [keda-scaler-poc] WHERE [name] = 'azure-func-instances'
+      targetValue: '1' 
+
+---
+
+# Function Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-function-deployment
+  labels: 
+    app: azure-function
+spec:
+  selector:
+    matchLabels:
+      app: azure-function
+  template:
+    metadata:
+      labels:
+        app: azure-function
+    spec:
+      containers:
+        - image: {{ .Values.function1.image }}
+          name: {{ .Values.function1.name }}
+          ports:
+          - containerPort: {{ .Values.function1.containerPort }}
+          env:
+          - name: MSSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mssql-password-secret
+                key: MSSQL_PASSWORD
+
+---
+
+# Function Service
+# This is the service that will expose the Azure Function to the outside world via nodeport (for local testing)
+# The service will be exposed via ingress in a production environment
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-function-service
+spec:
+  type: NodePort
+  selector:
+    app: azure-function
+  ports:
+    - protocol: TCP
+      port: {{ .Values.function1.port }}
+      targetPort: {{ .Values.function1.containerPort }}
+      nodePort: {{ .Values.function1.nodePort }}
+
+

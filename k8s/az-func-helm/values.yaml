@@ -1,0 +1,10 @@
+function1:
+  name: functionapp
+  image: localhost:5000/myfunctionapp
+  port: 7279
+  containerPort: 80
+  nodePort: 30002
+  environment:
+    - name: MyEnvironmentVar
+      value: value
+  
